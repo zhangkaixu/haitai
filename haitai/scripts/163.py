@@ -3,16 +3,18 @@ import time
 import sys
 import os
 import random
+import datetime
+
+import haitai
 
 help_text="""使用163下载股票每日历史数据
 
-./163.py date dest stock_id*
-    date ： 2013-11-01 或 20131101
-    dest ： data 或 . 神马的
-    stock_id ： 000629.sz 
+./163.py date [stocks]
+    date ： 2013-11-01 或 20131101 或 today
     
 例如：
-    ./haitai/scripts/163.py 2013-11-01 data `cat data/index_ids.txt`"""
+    ./haitai/scripts/163.py 2013-11-01 # 下载所有指数信息
+    ./haitai/scripts/163.py 2013-11-01 stocks # 下载所有股票信息"""
 
 url="""http://quotes.money.163.com/service/chddata.html?code=%(a)s&end=%(today)s&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;PCHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"""
 
@@ -29,15 +31,34 @@ if __name__ == '__main__':
     if len(sys.argv)==1 :
         print(help_text)
         exit()
-    stock_ids=sys.argv[3:]
+
+    if len(sys.argv)>2 :
+        stock_ids=[x.strip() for x in open(haitai.stock_ids)]
+        if (sys.argv[2]=='stocks') :
+            pass
+        if (sys.argv[2]=='top') :
+            stock_ids=[i for i in stock_ids if i[1]=='0' and i[2]=='0' 
+                    and (i[3]in '01')]
+
+    else :
+        stock_ids=[x.strip() for x in open(haitai.index_ids)]
+
     today=sys.argv[1]
-    today=today.replace('-','')
-    dest=os.path.join(sys.argv[2],'163_daily')
+    if today=='today' :
+        t=datetime.date.today()
+        m=t.month
+        if m<10 : m='0'+str(m)
+        d=t.day
+        if d<10 : d='0'+str(d)
+        today=''.join(map(str,(t.year,m,d)))
+    else :
+        today=today.replace('-','')
+
+    dest=haitai.daily_dir
 
     
 
     print("下载截止日期为 %s 的 %s 只股票每日行情到目标 %s" %(today,len(stock_ids),dest))
-
     stock_ids=sorted(stock_ids)
 
     n=len(stock_ids)
