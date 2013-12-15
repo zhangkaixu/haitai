@@ -1,5 +1,7 @@
+import haitai
 import os
 import sys
+import numpy as np
 
 nan=float('nan')
 
@@ -35,6 +37,8 @@ def gen_vec(lines,n,ind=3):
         if kv[-1-i-1][1]==0 : kv[-1-i-1][1]=float('nan')
     kv=kv[:n]
     return kv
+
+
 
 def gen_price(lines,n,vind=11,use_nan=True):
     ind=3
