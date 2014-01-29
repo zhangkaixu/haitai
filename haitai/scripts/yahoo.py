@@ -56,7 +56,8 @@ if __name__ == '__main__':
         if m<10 : m='0'+str(m)
         d=t.day
         if d<10 : d='0'+str(d)
-        today=''.join(map(str,(t.year,m,d)))
+        t=t.year
+        today=''.join(map(str,(t,m,d)))
     else :
         today=today.replace('-','')
 
@@ -92,12 +93,13 @@ if __name__ == '__main__':
 
         cmd=('wget "'+url+'''" -q -O %(f)s''')%{
                 'from_xm':0, 'from_d':1, 'from_y':2007,
-                'to_xm':11, 'to_d':15, 'to_y':2013,
+                'to_xm':0, 'to_d':13, 'to_y':2014,
                 'a': stock_id,'f': stock_file,
                 'today': today}
 
         if i+1 !=len(stock_ids) :
             time.sleep(1)
+        print(cmd)
         os.system(cmd)
 
         last=get_today(stock_file)
