@@ -21,7 +21,10 @@ daily_dir=os.path.join(data_dir,'163_daily')
 output_dir='output'
 
 
+## 函数
+
 def symbol_to_filename(symbol):
+    # 简便的方法 for daily数据
     if symbol[0]=='0' :
         return os.path.join(daily_dir,symbol+'.sz')
     else :
@@ -38,6 +41,13 @@ def load_recent_dates(ndays=100,index='399001.sz'):
     days=[l[0] for l in x]
     return days
 
+def get_symbol_list(bk='主板'):
+    li = open(stock_ids).read().splitlines()[1:]
+    if bk =='主板' :
+        return [x for x in li if x[:3]!='002']
+    return []
+    
+    #return [line.strip() for line in open(haitai.stock_ids)]
 
 def load_industries():
     d=dict()
@@ -111,7 +121,7 @@ def daily(symbol,ndays=100):
     dates=[datetime.date(*date) for date in dates]
     return {'name':name,'date':dates,'price':prices,'symbol':symbol}
 
+
 def symbols(syms=set()):
     for line in open(stock_ids) :
         line=line.strip()
-        print(line)
