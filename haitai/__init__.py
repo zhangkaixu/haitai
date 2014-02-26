@@ -62,6 +62,18 @@ def load_industries():
         d[ind].append(s)
     return d
 
+def load_names():
+    d=dict()
+    for line in open(industries) :
+        line=line.strip()
+        s,_,others=line.partition(' ')
+        s+='.sz' if s[0]=='0' else '.ss'
+        others,_,ind=others.rpartition(' ')
+        others,_,big=others.rpartition(' ')
+        d[s]=(others)
+    return d
+
+
 def gen_array(symbol,ndays=100):
     filename=os.path.join(daily_dir,symbol)
     x=os.popen('head -n %d %s'%(ndays+1,filename)).read().splitlines()[1:]

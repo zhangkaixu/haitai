@@ -1,6 +1,9 @@
 import time
 import haitai
 import os
+"""
+
+"""
 def get_today(stock_file):
     if os.path.exists(stock_file) :
         for k,l in enumerate(open(stock_file)):

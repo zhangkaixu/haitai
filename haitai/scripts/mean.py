@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
     # stocks
     th = set(haitai.get_symbol_list(bk))
-    th = set(list(th)[:100]) # for debug only
+    #th = set(list(th)[:100]) # for debug only
 
     # get data
     pss, vols = haitai.common.load_stock_set(th,ndays,dates)

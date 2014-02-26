@@ -63,4 +63,4 @@ if __name__ == '__main__':
         now=time.time()
         sec_left=(now-start_time)/(i+1)*(n-i-1)
         print(stock_id,last)
-        print("%.2f%% %.2f"%((i+1)/n*100,sec_left),end='\r')
+        print("已完成%.2f%% 剩余%.0f秒"%((i+1)/n*100,sec_left),end='\r')
