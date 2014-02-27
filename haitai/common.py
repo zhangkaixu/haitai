@@ -116,7 +116,11 @@ def gen_price(lines,n,vind=11,use_nan=True):
     return [[x[0],x[1],x[3]] for x in days]
 
 
-def load_stock_set(stock_set,ndays,dates):
+def load_stock_set(stock_set,ndays,dates,vol_ind=10):
+    """
+    vol_ind=10 # 换手率
+    vol_ind=11 # 成交量
+    """
     files=os.listdir(haitai.daily_dir)
     files=[[file,os.path.join(haitai.daily_dir,file)] for file in files]
     files=sorted(files)
@@ -143,7 +147,13 @@ def load_stock_set(stock_set,ndays,dates):
         pss.append(ps)
         print(k,end='\r')
 
-        vol=gen_vec(raw,ndays,ind=10)
+        vol=gen_vec(raw,ndays,ind=vol_ind)
         vol=np.array([p for d,p in vol])
         vols.append(vol)
     return pss,vols
+
+
+def moving_average(price,n=2):
+    p2=np.array(price.tolist()[1:]+[price[-1]])
+    p3=np.array(price.tolist()[2:]+[price[-1]]*2)
+    return (price+p2+p3)/2

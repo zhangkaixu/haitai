@@ -1,9 +1,34 @@
 import time
 import haitai
+import haitai.common
 import os
+import numpy as np
 """
 
 """
+
+def load_fresh_stock(stock_id,dates) :
+    stock_file=os.path.join('./data/163_daily/',stock_id)
+
+    if not os.path.exists(stock_file) :
+        return None
+
+    raw=list(open(stock_file))[1:]
+    if not raw : return None
+
+    today,cd,name,*_=raw[0].split(',')
+    if today!= dates[0] : 
+        print('not today',name,cd,dates[0])
+        return None
+
+    price=haitai.common.gen_price(raw,len(dates), vind=10)
+    min_days=len(price)
+    volum=np.array([x[2] for x in price])
+    price=np.array([x[1] for x in price])
+    price/=price[0]
+    return name,price,volum
+
+
 def get_today(stock_file):
     if os.path.exists(stock_file) :
         for k,l in enumerate(open(stock_file)):
