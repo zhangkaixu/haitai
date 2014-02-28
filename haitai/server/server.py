@@ -1,8 +1,16 @@
 #!/usr/bin/python3
-
 import cherrypy
+from jinja2 import Template
 import haitai
 import os
+
+"""
+you may need a config file such as :
+    
+    [global]
+    server.socket_host = "your IP"
+    server.socket_port = 8080
+"""
 
 def get_svg(path):
     if path == 'whole' or path == 'mean' :
@@ -31,54 +39,14 @@ class Figs(object):
             x.append("<br/>".join(y))
         return "<br/>".join(x)
 
-    index_html=""" <!DOCTYPE html>
-<html>
-<head>
-<style type="text/css">
-div#container{width:100%%}
-div#header {background-color:#99bbbb;}
-div#menu {background-color:#ffff99;  height:80%%;position:absolute;  width:20%%; float:left;overflow:auto;}
-div#content {background-color:#EEEEEE;width:80%%; height:80%%; float:right;overflow:auto;}
-div#footer {background-color:#99bbbb; clear:both; text-align:center;}
-h1 {margin-bottom:0;}
-h2 {margin-bottom:0; font-size:14px;}
-ul {margin:0;}
-li {list-style:none;}
-</style>
-</head>
-
-<body>
-
-<div id="container">
-
-<div id="header">
-<h1>Main Title of Web Page</h1>
-</div>
-
-<div id="menu">
-%(menu)s
-</div>
-
-<div id="content">
-<iframe id="if" width=100%% height=100%% ></iframe>
-</div>
-
-<div id="footer">Copyright W3School.com.cn</div>
-
-</div>
-
-</body>
-<script>
-function open_stock(stock_id){
-        document.getElementById("if").src="http://aliyun:8080/figs/"+stock_id
-}
-open_stock("mean")
-</script>
-</html>"""
     exposed = True
     def GET(self,stock_id=None):
         if stock_id == None :
-            return self.index_html%{"menu":self.show_list()}
+            index_html=open('./haitai/server/figs_template.html').read()
+            template=Template(index_html)
+            html = template.render({"menu" : self.show_list()})
+            return html
+
         svg=get_svg(stock_id)
         if svg is None : return "no such stock"
 

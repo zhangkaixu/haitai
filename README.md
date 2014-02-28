@@ -3,6 +3,11 @@ haitai
 
 haitai
 
+依赖
+---------------------
+python3
+cherrypy
+python3-mako
 
 
 R 语言部分
