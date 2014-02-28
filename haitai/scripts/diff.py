@@ -46,6 +46,10 @@ if __name__ == '__main__':
     today=dates[0]
     ps=numpy.array(list(map(float,ps)))
 
+    #rtn = netease_daily.load_fresh_stock('000300.ss', dates, vind = 11)
+    #name, price, volum = rtn
+    #ps=price
+
     th = set(haitai.get_symbol_list(bk))
     for f in sorted(th) :
         outfile='output/figs/'+f+'.svg'
