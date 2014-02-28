@@ -93,16 +93,11 @@ if __name__ == '__main__':
     stock_list=l
     stock_order={k:v for v,k in enumerate(stock_list)}
 
-
-
-
-    cherrypy.config.update({'server.socket_host': '115.28.22.82',
-                                'server.socket_port': 8080, })
-    #cherrypy.quickstart(HelloWorld())
+    cherrypy.config.update("server.config")
 
     cherrypy.tree.mount(
                 Figs(), '/figs',
-                {'/': {'request.dispatch': cherrypy.dispatch.MethodDispatcher()}}
+                {'/': {'request.dispatch': cherrypy.dispatch.MethodDispatcher()}},
             )
     cherrypy.engine.start()
     cherrypy.engine.block()
