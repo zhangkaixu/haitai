@@ -80,7 +80,7 @@ def gen_vec(lines,n,ind=3):
 
 
 
-def gen_price(lines,n,vind=11,use_nan=True):
+def gen_price(lines,n,vind=11,use_nan=True,nov=False):
     # 得到163daily文件中的价格一列
     # lines : raw data except the first line
     # vind  : ind of the column
@@ -90,7 +90,11 @@ def gen_price(lines,n,vind=11,use_nan=True):
     
     x=lines[:n]
     days=[a.split(',') for a in x]
-    days=[[x[0],x[3],float(x[7]),float(x[vind])] for x in days]
+
+    if nov==False :
+        days=[[x[0],x[3],float(x[7]),float(x[vind])] for x in days]
+    else :
+        days=[[x[0],x[3],float(x[7]),1] for x in days]
 
     k=1
     last=None

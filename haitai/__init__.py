@@ -35,6 +35,7 @@ def from_symbols_list_file(filename):
     return [line.strip() for line in open(filename)]
 
 def load_recent_dates(ndays=100,index='399001.sz'):
+    #index='000001.ss'
     index300=os.path.join(daily_dir,index)
     x=os.popen('head -n %d %s'%(ndays+1,index300)).read().splitlines()[1:]
     x=[l.split(',') for l in x]

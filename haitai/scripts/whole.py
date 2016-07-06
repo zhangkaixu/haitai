@@ -33,9 +33,10 @@ if __name__ == '__main__':
 
     # 列表中有的股票代码
     th = set(haitai.get_symbol_list(bk))
-    th={f for f in th if not (f[1:4]!='000' and f[1:4]!='001')}
+    #th = {f for f in th if not (f[1:4] != '000' and f[1:4] != '001')}
 
-    pss,vols=haitai.common.load_stock_set(set(list(th)[:100]),ndays,dates)
+    #pss,vols=haitai.common.load_stock_set(set(list(th)[:100]),ndays,dates)
+    pss,vols=haitai.common.load_stock_set(set(list(th)),ndays,dates)
 
     # 价格平均
     p=sum(pss)

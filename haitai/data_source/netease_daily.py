@@ -7,7 +7,7 @@ import numpy as np
 
 """
 
-def load_fresh_stock(stock_id,dates,vind=10) :
+def load_fresh_stock(stock_id,dates,vind=10, nov = False) :
     stock_file=os.path.join('./data/163_daily/',stock_id)
 
     if not os.path.exists(stock_file) :
@@ -21,7 +21,7 @@ def load_fresh_stock(stock_id,dates,vind=10) :
         print('not today',name,cd,dates[0])
         return None
 
-    price=haitai.common.gen_price(raw,len(dates), vind = vind)
+    price=haitai.common.gen_price(raw,len(dates), vind = vind, nov = nov)
     min_days=len(price)
     volum=np.array([x[2] for x in price])
     price=np.array([x[1] for x in price])

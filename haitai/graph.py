@@ -8,7 +8,7 @@ def gen_ticks(dates):
         date=date.split('-')
         month=date[0][3:]+date[1]
         year=date[0]
-        year+='-12' if int(date[1])>=7 else '-6'
+        #year+='-12' if int(date[1])>=7 else '-6'
         if year != last_year :
             last_year=year
             year_ticks[0].append(ind)
