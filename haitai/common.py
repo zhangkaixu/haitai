@@ -17,7 +17,7 @@ def subset(th,bk='沪深') :
 def recent_n_days(n):
     # 得到最近n个交易日日期
     data_dir=haitai.daily_dir
-    index300=os.path.join(data_dir,'000001.ss')
+    index300=os.path.join(data_dir,'000300.ss')
     x=list(open(index300))[1:1+n]
 
     dates=[a.split(',')[0] for a in x]
@@ -135,6 +135,8 @@ def load_stock_set(stock_set,ndays,dates,vol_ind=10):
         k,tp=f.split('.')
         if f not in stock_set : continue
         
+        print(v)
+        if not os.path.exists(v) : continue
         raw=list(open(v))[1:]
         vec=gen_price(raw,ndays,use_nan=False)
         if vec[-1][0]!=dates[-1] : 

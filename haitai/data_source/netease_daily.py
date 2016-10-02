@@ -43,11 +43,18 @@ def refresh_stock(stock_id,today):
     """
     url="""http://quotes.money.163.com/service/chddata.html?code=%(a)s&end=%(today)s&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;PCHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"""
     dest=haitai.daily_dir
-    stock_id,_,mkt=stock_id.partition('.')
-    if mkt=='sz' :
-        stock_id='1'+stock_id
-    else :
-        stock_id='0'+stock_id
+    if '.' in stock_id :
+        stock_id,_,mkt=stock_id.partition('.')
+        if mkt=='sz' :
+            stock_id='1'+stock_id
+        else :
+            stock_id='0'+stock_id
+    if len(stock_id) == 6:
+        if stock_id[0] == '6' :
+            stock_id='0'+stock_id
+        else :
+            stock_id='1'+stock_id
+
 
     stock_file=stock_id[1:]+'.'+('ss' if stock_id[0]=='0' else 'sz')
     stock_file=os.path.join(dest,stock_file)
