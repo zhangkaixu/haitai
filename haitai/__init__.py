@@ -1,3 +1,4 @@
+#coding:utf8
 import os
 import numpy as np
 import datetime
@@ -75,6 +76,7 @@ def load_names():
     return d
 
 
+
 def gen_array(symbol,ndays=100):
     filename=os.path.join(daily_dir,symbol)
     x=os.popen('head -n %d %s'%(ndays+1,filename)).read().splitlines()[1:]
@@ -102,6 +104,63 @@ def gen_array(symbol,ndays=100):
         #if flag  : return None,None,None
     dates,prices,_=(zip(*days))
     return name,dates,prices
+
+class Symbol (object) :
+    def __init__(self, s):
+        if type(s) is Symbol :
+            self.market = s.market
+            self.number = s.number
+            return
+        if len(s) == 7 :
+            self.market = 'ss' if s[0] == '0' else 'sz'
+            self.number = s[1:]
+            return
+        if len(s) == 6 :
+            self.number = s
+            if s[0] in '6' :
+                self.market = 'ss'
+            else :
+                self.market = 'sz'
+            return
+        if len(s) == 9 :
+            self.number,_ , self.market = s.partition('.')
+            return
+
+    def to_ndm(self):
+        return "%s.%s"%(self.number, self.market)
+
+
+def get_daily(symbol, ndays = 100):
+    sym = Symbol(symbol)
+    filename = os.path.join(daily_dir, sym.to_ndm())
+
+    x = os.popen(
+            'head -n %d %s'%(ndays + 1, filename)
+            ).read().splitlines()[1:]
+
+    x=[l.split(',') for l in x]
+    name=x[0][2]
+    days=[[l[0],l[3],float(l[7])] for l in x]
+    
+    k = 1 # 复权的系数
+    last = None
+    for i, day in enumerate(days):
+        if day[1]=='' or day[1]=='0.0': # 停牌的时候
+            day[1]=day[2]
+        else : 
+            day[1]=float(day[1])
+
+        if last is not None and last != day[0] :
+            k = k * day[1] / last
+
+        last = day[2]
+        day[1] /= k
+
+    dates,prices,_=(zip(*days))
+    prices=np.array(prices)
+    dates=[list(map(int,date.split('-')))for date in dates]
+    dates=[datetime.date(*date) for date in dates]
+    return {'name':name,'date':dates,'price':prices,'symbol':symbol}
 
 def daily(symbol,ndays=100):
     filename=os.path.join(daily_dir,symbol)

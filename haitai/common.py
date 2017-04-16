@@ -1,3 +1,5 @@
+#coding:utf8
+from __future__ import print_function
 import haitai
 import os
 import sys
@@ -143,7 +145,7 @@ def load_stock_set(stock_set,ndays,dates,vol_ind=10):
             print('dates not matched',k)
             continue
 
-        ps=np.array([p for d,p,*_ in vec])
+        ps=np.array([x[1] for x in vec])
         ps=ps/ps[0]
 
         if any(np.isnan(x) for x in ps) : 
