@@ -3,6 +3,7 @@ import os
 import numpy as np
 import datetime
 
+from . import half
 
 #####    meta_dir
 meta_dir='meta'
